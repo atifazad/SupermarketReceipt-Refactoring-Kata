@@ -39,8 +39,8 @@ class Discount:
 
 
 class ReceiptItem:
-    def __init__(self, product, quantity, price, total_price):
+    def __init__(self, product, quantity, price):
         self.product = product
         self.quantity = quantity
         self.price = price
-        self.total_price = total_price
+        self.total_price = quantity * price
