@@ -1,5 +1,7 @@
 import math
-from model_objects import Offer, Receipt, SpecialOfferType, Discount
+from model_objects import Offer, Receipt, Discount
+from enums import SpecialOfferType
+
 
 class Teller:
 

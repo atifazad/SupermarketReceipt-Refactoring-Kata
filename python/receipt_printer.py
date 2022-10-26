@@ -1,4 +1,4 @@
-from model_objects import ProductUnit
+from enums import ProductUnit
 
 class ReceiptPrinter:
 

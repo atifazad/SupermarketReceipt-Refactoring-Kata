@@ -2,9 +2,9 @@ import unittest
 
 from approvaltests import verify
 
-from model_objects import Product, SpecialOfferType, ProductUnit, Discount, Receipt
+from model_objects import Product, Discount, Receipt
 from receipt_printer import ReceiptPrinter
-
+from enums import ProductUnit
 
 
 class ReceiptPrinterTest(unittest.TestCase):

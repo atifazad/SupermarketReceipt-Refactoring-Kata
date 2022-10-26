@@ -7,10 +7,11 @@ texttest -a sr -d .
 import sys,csv
 from pathlib import Path
 
-from model_objects import Product, SpecialOfferType, ProductUnit, ShoppingCart
+from model_objects import Product, ShoppingCart
 from receipt_printer import ReceiptPrinter
 from teller import Teller
 from tests.fake_catalog import FakeCatalog
+from enums import ProductUnit, SpecialOfferType
 
 
 def read_catalog(catalog_file):
