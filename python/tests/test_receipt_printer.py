@@ -27,7 +27,7 @@ class ReceiptPrinterTest(unittest.TestCase):
         verify(ReceiptPrinter().print_receipt(self.receipt))
 
     def test_total(self):
-        self.receipt.add_product(self.toothbrush, 1, 0.99, 0.99 * 2)
+        self.receipt.add_product(self.toothbrush, 2, 0.99, 0.99 * 2)
         self.receipt.add_product(self.apples, 0.75, 1.99, 1.99 * 0.75)
         verify(ReceiptPrinter().print_receipt(self.receipt))
 
