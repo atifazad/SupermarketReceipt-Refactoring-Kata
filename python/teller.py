@@ -1,6 +1,4 @@
-from model_objects import Offer
-from receipt import Receipt
-
+from model_objects import Offer, Receipt
 
 class Teller:
 
