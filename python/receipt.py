@@ -1,11 +1,4 @@
-
-class ReceiptItem:
-    def __init__(self, product, quantity, price, total_price):
-        self.product = product
-        self.quantity = quantity
-        self.price = price
-        self.total_price = total_price
-
+from model_objects import ReceiptItem
 
 class Receipt:
     def __init__(self):

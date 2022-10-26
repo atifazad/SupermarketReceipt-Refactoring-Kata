@@ -36,3 +36,11 @@ class Discount:
         self.product = product
         self.description = description
         self.discount_amount = discount_amount
+
+
+class ReceiptItem:
+    def __init__(self, product, quantity, price, total_price):
+        self.product = product
+        self.quantity = quantity
+        self.price = price
+        self.total_price = total_price
