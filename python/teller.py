@@ -139,4 +139,3 @@ class Teller:
             discount_description = f"{bundle_frequency}x{bundle_offer.argument}% bundle offer"
             discount = Discount(product, discount_description, -discount_amount)
         return discount
-    

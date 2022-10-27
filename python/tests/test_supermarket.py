@@ -180,3 +180,22 @@ class SupermarketTest(unittest.TestCase):
         self.teller.add_bundle_offer(BundleOfferType.TEN_PERCENT_DISCOUNT, bundle_offer_product_quantities, 10)
         receipt = self.teller.checks_out_articles_from(self.the_cart)
         verify(ReceiptPrinter(40).print_receipt(receipt))
+
+    def test_percent_discount_on_multiple_bundles(self):
+        self.the_cart.add_item_quantity(self.apples, 2.0)
+        self.the_cart.add_item_quantity(self.rice, 1.0)
+        self.the_cart.add_item_quantity(self.cherry_tomatoes, 3.0)
+        self.the_cart.add_item_quantity(self.toothbrush, 1)
+        self.the_cart.add_item_quantity(self.toothpaste, 1)
+        bundle_offer_1 = {
+            self.apples: 1.0,
+            self.rice: 1.0
+        }
+        bundle_offer_2 = {
+            self.toothbrush: 1,
+            self.toothpaste: 1
+        }
+        self.teller.add_bundle_offer(BundleOfferType.TEN_PERCENT_DISCOUNT, bundle_offer_1, 10)
+        self.teller.add_bundle_offer(BundleOfferType.TEN_PERCENT_DISCOUNT, bundle_offer_2, 10)
+        receipt = self.teller.checks_out_articles_from(self.the_cart)
+        verify(ReceiptPrinter(40).print_receipt(receipt))
