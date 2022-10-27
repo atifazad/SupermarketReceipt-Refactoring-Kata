@@ -11,3 +11,7 @@ class SpecialOfferType(Enum):
     TEN_PERCENT_DISCOUNT = 2
     TWO_FOR_AMOUNT = 3
     FIVE_FOR_AMOUNT = 4
+
+
+class BundleOfferType(Enum):
+    TEN_PERCENT_DISCOUNT = 1

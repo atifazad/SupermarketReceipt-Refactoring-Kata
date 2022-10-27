@@ -1,5 +1,5 @@
 import math
-from model_objects import Offer, Receipt, Discount
+from model_objects import Offer, BundleOffer, Receipt, Discount
 from enums import SpecialOfferType
 
 
@@ -8,9 +8,13 @@ class Teller:
     def __init__(self, catalog):
         self.catalog = catalog
         self.offers = {}
+        self.bundle_offers = []
 
     def add_special_offer(self, offer_type, product, argument):
         self.offers[product] = Offer(offer_type, product, argument)
+
+    def add_bundle_offer(self, offer_type, product_quantites, argument):
+        self.bundle_offers.append(BundleOffer(offer_type, product_quantites, argument))
 
     def checks_out_articles_from(self, the_cart):
         receipt = Receipt()
