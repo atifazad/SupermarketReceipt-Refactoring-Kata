@@ -6,7 +6,7 @@ from model_objects import Product, ShoppingCart
 from receipt_printer import ReceiptPrinter
 from teller import Teller
 from tests.fake_catalog import FakeCatalog
-from enums import ProductUnit, SpecialOfferType
+from enums import ProductUnit, SpecialOfferType, BundleOfferType
 
 
 class SupermarketTest(unittest.TestCase):
@@ -17,6 +17,8 @@ class SupermarketTest(unittest.TestCase):
 
         self.toothbrush = Product("toothbrush", ProductUnit.EACH)
         self.catalog.add_product(self.toothbrush, 0.99)
+        self.toothpaste = Product("toothpaste", ProductUnit.EACH)
+        self.catalog.add_product(self.toothpaste, 1.49)
         self.rice = Product("rice", ProductUnit.EACH)
         self.catalog.add_product(self.rice, 2.99)
         self.apples = Product("apples", ProductUnit.KILO)
@@ -98,5 +100,83 @@ class SupermarketTest(unittest.TestCase):
     def test_five_for_y_discount_with_four(self):
         self.the_cart.add_item_quantity(self.apples, 4)
         self.teller.add_special_offer(SpecialOfferType.FIVE_FOR_AMOUNT, self.apples, 6.99)
+        receipt = self.teller.checks_out_articles_from(self.the_cart)
+        verify(ReceiptPrinter(40).print_receipt(receipt))
+
+    def test_percent_discount_on_bundle(self):
+        self.the_cart.add_item_quantity(self.toothbrush, 1)
+        self.the_cart.add_item_quantity(self.toothpaste, 1)
+        bundle_offer_product_quantities = {
+            self.toothbrush: 1,
+            self.toothpaste: 1
+        }
+        self.teller.add_bundle_offer(BundleOfferType.TEN_PERCENT_DISCOUNT, bundle_offer_product_quantities, 10)
+        receipt = self.teller.checks_out_articles_from(self.the_cart)
+        verify(ReceiptPrinter(40).print_receipt(receipt))
+
+    def test_percent_discount_on_bundle_no_match(self):
+        self.the_cart.add_item_quantity(self.apples, 1.0)
+        self.the_cart.add_item_quantity(self.rice, 1)
+        bundle_offer_product_quantities = {
+            self.toothbrush: 1,
+            self.toothpaste: 1
+        }
+        self.teller.add_bundle_offer(BundleOfferType.TEN_PERCENT_DISCOUNT, bundle_offer_product_quantities, 10)
+        receipt = self.teller.checks_out_articles_from(self.the_cart)
+        verify(ReceiptPrinter(40).print_receipt(receipt))
+
+    def test_percent_discount_on_bundle_with_too_few_items(self):
+        self.the_cart.add_item_quantity(self.toothbrush, 1)
+        self.the_cart.add_item_quantity(self.toothpaste, 1)
+        bundle_offer_product_quantities = {
+            self.toothbrush: 2,
+            self.toothpaste: 2
+        }
+        self.teller.add_bundle_offer(BundleOfferType.TEN_PERCENT_DISCOUNT, bundle_offer_product_quantities, 10)
+        receipt = self.teller.checks_out_articles_from(self.the_cart)
+        verify(ReceiptPrinter(40).print_receipt(receipt))
+
+    def test_percent_discount_on_bundle_with_extra_quantity(self):
+        self.the_cart.add_item_quantity(self.toothbrush, 2)
+        self.the_cart.add_item_quantity(self.toothpaste, 1)
+        bundle_offer_product_quantities = {
+            self.toothbrush: 1,
+            self.toothpaste: 1
+        }
+        self.teller.add_bundle_offer(BundleOfferType.TEN_PERCENT_DISCOUNT, bundle_offer_product_quantities, 10)
+        receipt = self.teller.checks_out_articles_from(self.the_cart)
+        verify(ReceiptPrinter(40).print_receipt(receipt))
+
+    def test_percent_discount_on_bundle_with_extra_items(self):
+        self.the_cart.add_item_quantity(self.toothbrush, 1)
+        self.the_cart.add_item_quantity(self.toothpaste, 1)
+        self.the_cart.add_item_quantity(self.cherry_tomatoes, 0.5)
+        bundle_offer_product_quantities = {
+            self.toothbrush: 1,
+            self.toothpaste: 1
+        }
+        self.teller.add_bundle_offer(BundleOfferType.TEN_PERCENT_DISCOUNT, bundle_offer_product_quantities, 10)
+        receipt = self.teller.checks_out_articles_from(self.the_cart)
+        verify(ReceiptPrinter(40).print_receipt(receipt))
+
+    def test_percent_discount_on_bundle_with_multiples(self):
+        self.the_cart.add_item_quantity(self.toothbrush, 3)
+        self.the_cart.add_item_quantity(self.toothpaste, 5)
+        bundle_offer_product_quantities = {
+            self.toothbrush: 1,
+            self.toothpaste: 1
+        }
+        self.teller.add_bundle_offer(BundleOfferType.TEN_PERCENT_DISCOUNT, bundle_offer_product_quantities, 10)
+        receipt = self.teller.checks_out_articles_from(self.the_cart)
+        verify(ReceiptPrinter(40).print_receipt(receipt))
+
+    def test_percent_discount_on_bundle_with_per_kilo_items(self):
+        self.the_cart.add_item_quantity(self.apples, 2.0)
+        self.the_cart.add_item_quantity(self.cherry_tomatoes, 3.0)
+        bundle_offer_product_quantities = {
+            self.apples: 1.0,
+            self.cherry_tomatoes: 1.0
+        }
+        self.teller.add_bundle_offer(BundleOfferType.TEN_PERCENT_DISCOUNT, bundle_offer_product_quantities, 10)
         receipt = self.teller.checks_out_articles_from(self.the_cart)
         verify(ReceiptPrinter(40).print_receipt(receipt))
