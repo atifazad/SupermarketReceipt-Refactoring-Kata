@@ -1,4 +1,14 @@
-from enum import Enum
+class SupermarketCatalog:
+
+    def __init__(self):
+        self.products = {}
+        self.prices = {}
+
+    def add_product(self, product, price):
+        raise Exception("cannot be called from a unit test - it accesses the database")
+
+    def unit_price(self, product):
+        raise Exception("cannot be called from a unit test - it accesses the database")
 
 
 class Product:
@@ -13,17 +23,6 @@ class ProductQuantity:
         self.quantity = quantity
 
 
-class ProductUnit(Enum):
-    EACH = 1
-    KILO = 2
-
-
-class SpecialOfferType(Enum):
-    THREE_FOR_TWO = 1
-    TEN_PERCENT_DISCOUNT = 2
-    TWO_FOR_AMOUNT = 3
-    FIVE_FOR_AMOUNT = 4
-
 class Offer:
     def __init__(self, offer_type, product, argument):
         self.offer_type = offer_type
@@ -36,3 +35,65 @@ class Discount:
         self.product = product
         self.description = description
         self.discount_amount = discount_amount
+
+
+class ShoppingCart:
+
+    def __init__(self):
+        self._items = []
+        self._product_quantities = {}
+
+    @property
+    def items(self):
+        return self._items
+
+    @property
+    def product_quantities(self):
+        return self._product_quantities
+
+    def add_item(self, product):
+        self.add_item_quantity(product, 1.0)
+
+    def add_item_quantity(self, product, quantity):
+        self._items.append(ProductQuantity(product, quantity))
+        if product in self._product_quantities.keys():
+            self._product_quantities[product] = self._product_quantities[product] + quantity
+        else:
+            self._product_quantities[product] = quantity  
+
+
+class ReceiptItem:
+    def __init__(self, product, quantity, price):
+        self.product = product
+        self.quantity = quantity
+        self.price = price
+        self.total_price = quantity * price
+
+
+class Receipt:
+    def __init__(self):
+        self._items = []
+        self._discounts = []
+
+    @property
+    def total_price(self):
+        total = 0
+        for item in self.items:
+            total += item.total_price
+        for discount in self.discounts:
+            total += discount.discount_amount
+        return total
+
+    @property
+    def items(self):
+        return self._items[:]
+
+    @property
+    def discounts(self):
+        return self._discounts[:]
+
+    def add_product(self, product, quantity, price):
+        self._items.append(ReceiptItem(product, quantity, price))
+
+    def add_discount(self, discount):
+        self._discounts.append(discount)

@@ -1,4 +1,4 @@
-from catalog import SupermarketCatalog
+from model_objects import SupermarketCatalog
 
 
 class FakeCatalog(SupermarketCatalog):
