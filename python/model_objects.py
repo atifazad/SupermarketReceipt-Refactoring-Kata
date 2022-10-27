@@ -30,6 +30,13 @@ class Offer:
         self.argument = argument
 
 
+class BundleOffer:
+    def __init__(self, offer_type, product_quantities, argument):
+        self.offer_type = offer_type
+        self.product_quantities = product_quantities
+        self.argument = argument
+
+
 class Discount:
     def __init__(self, product, description, discount_amount):
         self.product = product

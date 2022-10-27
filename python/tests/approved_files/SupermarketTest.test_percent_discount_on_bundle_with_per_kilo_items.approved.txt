@@ -1,0 +1,8 @@
+apples                              3.98
+  1.99 * 2.000
+cherry tomato box                   2.07
+  0.69 * 3.0
+2.0x10% bundle offer (apples)      -0.40
+2.0x10% bundle offer (cherry tomato box)-0.14
+
+Total:                              5.51

@@ -1,0 +1,8 @@
+toothbrush                          0.99
+toothpaste                          1.49
+cherry tomato box                   0.34
+  0.69 * 0.5
+1x10% bundle offer (toothbrush)    -0.10
+1x10% bundle offer (toothpaste)    -0.15
+
+Total:                              2.58

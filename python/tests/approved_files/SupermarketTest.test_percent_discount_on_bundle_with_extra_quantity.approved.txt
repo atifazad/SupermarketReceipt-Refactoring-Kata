@@ -1,0 +1,7 @@
+toothbrush                          1.98
+  0.99 * 2
+toothpaste                          1.49
+1x10% bundle offer (toothbrush)    -0.10
+1x10% bundle offer (toothpaste)    -0.15
+
+Total:                              3.22

@@ -1,0 +1,4 @@
+toothbrush                          0.99
+toothpaste                          1.49
+
+Total:                              2.48
