@@ -27,30 +27,33 @@ class Teller:
         for product in the_cart._product_quantities.keys():
             quantity = the_cart._product_quantities[product]
             if product in self.offers.keys():
-                discount = self.compute_discount(product, quantity)
+                discount = self.__compute_discount(product, quantity)
 
                 if discount:
                     receipt.add_discount(discount)
 
-    def compute_discount(self, product, quantity):
+    def product_with_name(self, name):
+        return self.catalog.products.get(name, None)
+
+    def __compute_discount(self, product, quantity):
         offer = self.offers[product]
         quantity_as_int = int(quantity)
         discount = None
         if offer.offer_type == SpecialOfferType.THREE_FOR_TWO and quantity_as_int > 2:
-            discount = self.compute_discount_for_X_for_Y_offer(product, quantity, 3, 2)
+            discount = self.__compute_discount_for_X_for_Y_offer(product, quantity, 3, 2)
 
         elif offer.offer_type == SpecialOfferType.TWO_FOR_AMOUNT and quantity_as_int >= 2:
-            discount = self.compute_discount_for_X_for_amount_offer(product, quantity, 2)
+            discount = self.__compute_discount_for_X_for_amount_offer(product, quantity, 2)
 
         elif offer.offer_type == SpecialOfferType.FIVE_FOR_AMOUNT and quantity_as_int >= 5:
-            discount = self.compute_discount_for_X_for_amount_offer(product, quantity, 5)
+            discount = self.__compute_discount_for_X_for_amount_offer(product, quantity, 5)
         
         elif offer.offer_type == SpecialOfferType.TEN_PERCENT_DISCOUNT:
-            discount = self.compute_discount_for_x_percent_discount_offer(product, quantity)
+            discount = self.__compute_discount_for_x_percent_discount_offer(product, quantity)
         
         return discount
 
-    def compute_discount_for_X_for_amount_offer(self, product, quantity, X):
+    def __compute_discount_for_X_for_amount_offer(self, product, quantity, X):
         offer = self.offers[product]
         quantity_as_int = int(quantity)
         number_of_x = math.floor(quantity_as_int / X)
@@ -59,7 +62,7 @@ class Teller:
         discount_amount = unit_price * quantity - discounted_total
         return Discount(product, str(X) + " for " + str(offer.argument), -discount_amount)
 
-    def compute_discount_for_X_for_Y_offer(self, product, quantity, X, Y):
+    def __compute_discount_for_X_for_Y_offer(self, product, quantity, X, Y):
         quantity_as_int = int(quantity)
         number_of_x = math.floor(quantity_as_int / X)
         unit_price = self.catalog.unit_price(product)
@@ -67,13 +70,10 @@ class Teller:
         discount_amount =  unit_price * quantity - discounted_total
         return Discount(product, str(X) + " for " + str(Y), -discount_amount)
 
-    def compute_discount_for_x_percent_discount_offer(self, product, quantity):
+    def __compute_discount_for_x_percent_discount_offer(self, product, quantity):
         offer = self.offers[product]
         unit_price = self.catalog.unit_price(product)
         discount_amount =  unit_price * quantity * offer.argument / 100.0
         discount = Discount(product, str(offer.argument) + "% off", -discount_amount)
         return discount
-
-    def product_with_name(self, name):
-        return self.catalog.products.get(name, None)
     
