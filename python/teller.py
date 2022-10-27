@@ -71,7 +71,7 @@ class Teller:
                 if bundle.offer_type == BundleOfferType.TEN_PERCENT_DISCOUNT:
                     bundle_frequency = self.__get_frequency_of_bundle(the_cart, bundle)
                     discount = self.__compute_discount_for_x_percent_bundle_discount_offer(product, quantity, bundle, bundle_frequency)
-                    if not max_discount or max_discount.discount_amount < discount.discount_amount:
+                    if not max_discount or max_discount.discount_amount > discount.discount_amount:
                         max_discount = discount
 
         return max_discount

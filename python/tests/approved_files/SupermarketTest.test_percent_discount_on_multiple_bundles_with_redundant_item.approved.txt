@@ -1,0 +1,10 @@
+rice                                2.99
+toothbrush                          9.90
+  0.99 * 10
+toothpaste                         14.90
+  1.49 * 10
+1.0x10% bundle offer (rice)        -0.30
+10x10% bundle offer (toothbrush)   -0.99
+10x10% bundle offer (toothpaste)   -1.49
+
+Total:                             25.01
